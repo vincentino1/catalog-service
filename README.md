@@ -12,7 +12,7 @@ The Catalog Service is responsible for:
 
 ## Technology Stack
 
-- **Java 17**
+- **Java 21**
 - **Spring Boot 3.2.1**
 - **Spring Data JPA**
 - **Spring Security** (JWT authentication)
@@ -23,7 +23,7 @@ The Catalog Service is responsible for:
 
 ## Prerequisites
 
-- Java 17 or higher
+- Java 21 or higher
 - Maven 3.6+
 - PostgreSQL 14+
 - Docker (optional, for running PostgreSQL)
