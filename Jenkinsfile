@@ -9,7 +9,7 @@ properties([
                 [key: 'repo_name', value: '$.repository.name']
             ],
             regexpFilterText: '$repo_name:$ref',
-            regexpFilterExpression: '^frontend:refs/heads/main$'
+            regexpFilterExpression: '^catalog-service:refs/heads/main$'
         ]
     ])
 ])
