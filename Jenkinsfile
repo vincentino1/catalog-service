@@ -19,6 +19,7 @@ pipeline {
 
     tools {
         maven 'maven 3.6' // Name must match the one you configured in Jenkins
+        jdk 'jdk17'
     }
         environment {
         // credentials for git
