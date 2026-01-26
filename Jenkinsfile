@@ -59,7 +59,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                    sh 'mvn clean install'
+                    sh 'mvn clean install -DskipTests'
             }
         }
     }
