@@ -57,7 +57,7 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Build & Install') {
             steps {
                     sh 'mvn clean install'
             }
