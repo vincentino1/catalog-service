@@ -9,7 +9,7 @@ properties([
                 [key: 'repo_name', value: '$.repository.name']
             ],
             regexpFilterText: '$repo_name:$ref',
-            regexpFilterExpression: '^catalog-service:refs/heads/main$'
+            regexpFilterExpression: '^.+:refs/heads/.+$' // default to any repo_name and branch in the payload
         ]
     ])
 ])
