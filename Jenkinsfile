@@ -44,7 +44,8 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    env.branchName = env.ref.replace('refs/heads/', '')
+                    
+                    env.branchName = (env.ref ?: 'refs/heads/main').replace('refs/heads/', '')
                     echo "Checking out branch: ${env.branchName}"   
                 }
                 git(
