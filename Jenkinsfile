@@ -15,12 +15,12 @@ properties([
 ])
 
 pipeline {
-    agent any
-
-    tools {
-        maven 'maven 3.6' // Name must match the one you configured in Jenkins
-        jdk 'jdk21'
-    }
+        agent {
+            docker {
+                image 'maven:3.9.9-eclipse-temurin-21'
+            }
+        }
+    
         environment {
         // credentials for git
         GIT_CREDENTIALS = 'Git_Credential'
