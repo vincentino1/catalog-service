@@ -56,18 +56,7 @@ pipeline {
                 )
             }
         }
-
-        stage('Debug Java') {
-            steps {
-                    sh '''
-                      echo "JAVA_HOME=$JAVA_HOME"
-                      java -version
-                      javac -version
-                      mvn -version
-                      '''
-            }
-        }
-
+        
         stage('Install & Build') {
             steps {
                     sh 'mvn clean install'
