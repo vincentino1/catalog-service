@@ -15,12 +15,12 @@ properties([
 ])
 
 pipeline {
-        agent {
-            docker {
-                image 'maven:3.9.6-eclipse-temurin-21'
-                args '-u root'
-            }
-        }
+    agent any
+
+    tools {
+        jdk 'jdk17'
+        maven 'maven3.6'
+    }
     
         environment {
         // credentials for git
@@ -69,7 +69,7 @@ pipeline {
             }
         }
 
-        stage('Build & Install') {
+        stage('Install & Build') {
             steps {
                     sh 'mvn clean install'
             }
