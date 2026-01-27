@@ -20,8 +20,7 @@ pipeline {
     tools {
         jdk 'jdk21'
         maven 'maven3.6'
-    }
-    
+    }    
         environment {
         // credentials for git
         GIT_CREDENTIALS = 'Git_Credential'
