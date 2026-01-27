@@ -326,7 +326,7 @@ The migration includes 5 sample products:
 - Leather Messenger Bag
 - Minimalist Watch
 
-## Support
+## Supportt
 
 For issues or questions, please refer to the technical documentation or contact the development team.
 
