@@ -10,7 +10,7 @@ The Catalog Service is responsible for:
 - Inventory management
 - Price and availability information
 
-## Technology Stack  
+## Technology Stack 
 
 - **Java 21**
 - **Spring Boot 3.2.1**
