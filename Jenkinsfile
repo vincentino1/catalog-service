@@ -14,7 +14,7 @@ properties([
     ])
 ])
 
-pipeline {
+pipeline {  
     agent any
 
     tools {
