@@ -72,5 +72,5 @@ pipeline {
             echo 'The pipeline encountered an error and did not complete successfully.'
         }
     }
-}
+} 
 
