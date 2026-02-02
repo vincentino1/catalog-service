@@ -63,4 +63,14 @@ pipeline {
             }
         }
     }
+
+    post { 
+        success { 
+            echo 'Pipeline completed successfully.'
+        }
+        failure{            
+            echo 'The pipeline encountered an error and did not complete successfully.'
+        }
+    }
 }
+
