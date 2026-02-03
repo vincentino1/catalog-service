@@ -28,7 +28,7 @@ pipeline {
 
         // Nexus
         NEXUS_VERSION        = 'nexus3'
-        NEXUS_URL            = 'https://dev-public-alb-1106474704.ca-central-1.elb.amazonaws.com/repository/maven-releases'
+        NEXUS_URL            = 'https://dev-public-alb-1106474704.ca-central-1.elb.amazonaws.com/repository/maven-releases'  
         NEXUS_REPO           = 'maven-releases'
         NEXUS_CREDENTIALS_ID = 'Nexus_ID'
     }
