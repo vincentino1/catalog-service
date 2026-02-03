@@ -59,7 +59,11 @@ pipeline {
         
         stage('Install & Build') {
             steps {
-                    sh 'mvn clean package'
+               configFileProvider([
+                   configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')
+                ]) {
+                    sh 'mvn -s $MAVEN_SETTINGS clean package'
+                }
             }
         }
     }
@@ -73,4 +77,3 @@ pipeline {
         }
     }
 } 
-
