@@ -2,7 +2,7 @@
 
 Catalog Service for VogueThreads E-Commerce Platform - A Java/Spring Boot microservice for managing product catalog.
 
-## Overview
+## Overview  
 
 The Catalog Service is responsible for:
 - CRUD operations for products 
