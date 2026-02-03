@@ -32,7 +32,7 @@ The Catalog Service is responsible for:
 
 ### Option 1: Local PostgreSQL
 
-1. Install PostgreSQL
+1. Install PostgreSQL 
 2. Create database and user:
 
 ```sql
