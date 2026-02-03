@@ -25,6 +25,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    distributionManagement>
+    <repository>
+      <id>nexus</id>
+      <name>maven-releases</name>
+      <url>http://dev-public-alb-1106474704.ca-central-1.elb.amazonaws.com:8081/repository/maven-releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>nexus</id>
+      <name>maven-snapshots</name>
+      <url>http:http://dev-public-alb-1106474704.ca-central-1.elb.amazonaws.com:8081/repository/maven-snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
+         
     <dependencies>
         <!-- Spring Boot Web -->
         <dependency>
