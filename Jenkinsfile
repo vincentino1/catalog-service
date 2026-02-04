@@ -28,7 +28,7 @@ pipeline {
 
         // Nexus
         NEXUS_VERSION        = 'nexus3'
-        NEXUS_URL            = 'http://10.0.10.208:8081/repository/myapp-maven-releases/'  
+        NEXUS_URL            = '10.0.10.208:8081/repository/myapp-maven-releases/'  
         NEXUS_REPO           = 'maven-releases'
         NEXUS_CREDENTIALS_ID = 'Nexus_ID'
     }
