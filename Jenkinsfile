@@ -105,7 +105,7 @@ pipeline {
                         groupId: pom.groupId,
                         version: version,
                         repository: env.NEXUS_REPO,
-                        credentialsId: 'jenkins123',
+                        credentialsId: env.NEXUS_CREDENTIALS_ID,
                         artifacts: [[
                             artifactId: artifactId,
                             file: artifactPath,
