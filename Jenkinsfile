@@ -70,6 +70,7 @@ pipeline {
                     configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')
                 ]) {
                     sh 'mvn -s $MAVEN_SETTINGS clean package'
+                    sh 'mvn deploy -X '
                 }
             }
         }
