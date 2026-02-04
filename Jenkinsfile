@@ -69,8 +69,10 @@ pipeline {
                 configFileProvider([
                     configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')
                 ]) {
-                    sh 'mvn -s $MAVEN_SETTINGS clean package'
-                    sh 'mvn -s $MAVEN_SETTINGS deploy -X'
+                    sh """
+                        mvn -s $MAVEN_SETTINGS clean package
+                        mvn -s $MAVEN_SETTINGS deploy -X
+                    """
                 }
             }
         }
