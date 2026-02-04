@@ -8,7 +8,7 @@ The Catalog Service is responsible for:
 - CRUD operations for products 
 - Product search and filtering
 - Inventory management  
-- Price and availability information
+- Price and availability information 
 
 ## Technology Stack 
 
