@@ -105,7 +105,6 @@ pipeline {
                         credentialsId: env.NEXUS_CREDENTIALS_ID,
                         artifacts: [[
                             artifactId: artifactId,
-                            classifier: '',
                             file: artifactPath,
                             type: packaging
                         ]]
