@@ -27,7 +27,7 @@
 
     <distributionManagement>
     <repository>
-      <id>nexus</id>
+      <id>nexus</id>  
       <name>myapp-maven-releases</name>
       <url>http://10.0.10.208:8081/repository/myapp-maven-releases/</url>
     </repository>
