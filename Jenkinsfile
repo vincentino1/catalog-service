@@ -69,10 +69,7 @@ pipeline {
                 configFileProvider([
                     configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')
                 ]) {
-                    sh """
-                        mvn -s $MAVEN_SETTINGS clean package
-                        mvn -s $MAVEN_SETTINGS deploy -X
-                    """
+                    sh 'mvn -s $MAVEN_SETTINGS clean package'
                 }
             }
         }
@@ -97,7 +94,8 @@ pipeline {
 
                     def artifactPath = artifacts[0].path
                     echo "Publishing ${artifactPath}"
-                    
+
+                    // Debugging:
                     echo "Nexus_version: ${env.NEXUS_VERSION}"
                     echo "Nexus_url: ${env.NEXUS_URL}"
                     echo "groupid: ${pom.groupId}"
