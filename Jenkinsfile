@@ -97,6 +97,17 @@ pipeline {
 
                     def artifactPath = artifacts[0].path
                     echo "Publishing ${artifactPath}"
+                    
+                    echo "Nexus_version: ${env.NEXUS_VERSION}"
+                    echo "Nexus_url: ${env.NEXUS_URL}"
+                    echo "groupid: ${pom.groupId}"
+                    echo "version: ${version}"
+                    echo "Nexus repo: ${env.NEXUS_REPO}"
+                    echo "Nexus user password: ${env.NEXUS_CREDENTIALS_ID}"
+                    echo "Artifact: ${pom.artifactId}"
+                    echo "Artifactpath: ${artifactPath}"
+                    echo "Packinging: ${pom.packaging}"
+            
 
                     nexusArtifactUploader(
                         nexusVersion: env.NEXUS_VERSION,
