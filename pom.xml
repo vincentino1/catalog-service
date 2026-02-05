@@ -27,17 +27,11 @@
 
     <distributionManagement>
     <repository>
-      <id>nexus</id>  
+      <id>myapp-maven-releases</id>  
       <name>myapp-maven-releases</name>
-      <url>http://10.0.10.208:8081/repository/myapp-maven-releases/</url>
+      <url>http://10.0.10.208:8081/repository/myapp-maven-public/</url>
     </repository>
-    <snapshotRepository>
-      <id>nexus</id>
-      <name>nexus</name>
-      <url>http://10.0.10.208:8081/repository/myapp-maven-snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
-         
+             
     <dependencies>
         <!-- Spring Boot Web -->
         <dependency>
