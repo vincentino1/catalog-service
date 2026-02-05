@@ -1,9 +1,19 @@
-FROM eclipse-temurin:17-jre-alpine
+# ---- Build stage ----
+FROM maven:3.6.3-eclipse-temurin-21-alpine AS build
+WORKDIR /build
 
+# Copy project files
+COPY . .
+
+# Build the application
+RUN mvn clean package
+
+# ---- Runtime stage ----
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
-# Copy the jar file
-COPY target/catalog-service-1.0.0.jar app.jar
+# Copy the built JAR from the build stage
+COPY --from=build /build/target/catalog-service-*.jar app.jar
 
 # Expose port
 EXPOSE 8081
@@ -12,6 +22,6 @@ EXPOSE 8081
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:8081/api/catalog/health || exit 1
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Your original ENTRYPOINT (kept exactly as you want it)
+ENTRYPOINT ["java","-jar","app.jar"]
 
