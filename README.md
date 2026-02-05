@@ -9,7 +9,7 @@ The Catalog Service is responsible for:
 - Product search and filtering
 - Inventory management  
 - Price and availability information 
-
+   
 ## Technology Stack 
 
 - **Java 21**
