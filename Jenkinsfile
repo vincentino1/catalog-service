@@ -125,6 +125,30 @@ pipeline {
                 }
             }
         }
+
+        stage('Docker Registry Login') {
+            steps{
+                withCredentials([usernamePassword(
+                    credentialsId: 'Nexus_ID', 
+                    usernameVariable : 'USR',
+                    passwordVariable : 'PWD' 
+                )]) {
+                    sh """ 
+                        echo "$PWD" | docker login 16-52-79-103.sslip.io \
+                        --username "$USR" --password-stdin 
+                    """
+                } 
+            }
+           
+        }
+
+        stage ('Docker Build') {
+            steps{
+                sh 'docker build -t nexus .'
+            }            
+
+        }
+
     }
 
     post {
