@@ -30,7 +30,7 @@ pipeline {
         // Nexus
         NEXUS_VERSION        = 'nexus3'
         NEXUS_URL            = '10.0.10.209:8081'  
-        NEXUS_REPO           = 'myapp-maven-releases'
+        NEXUS_REPO           = 'myapp-maven-hosted'
 
     }
 
