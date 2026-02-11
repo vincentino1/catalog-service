@@ -29,7 +29,7 @@
     <repository>
       <id>nexus</id>  
       <name>myapp-maven-releases</name>
-      <url>http://10.0.10.25:8081/repository/myapp-maven-releases/</url>
+      <url>http://10.0.10.209:8081/repository/myapp-maven-group/</url>
     </repository>
      </distributionManagement>
              
