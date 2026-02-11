@@ -1,15 +1,20 @@
 # ---- Build stage ----
-FROM maven:3.6.3-eclipse-temurin-21-alpine AS build
+FROM 16-52-79-103.sslip.io/myapp-docker-group/maven:3.9.6-eclipse-temurin-21 AS build
+
 WORKDIR /build
 
-# Copy project files
+# Copy the Maven descriptor first (better caching)
+COPY pom.xml .
+
+# Copy the rest of the project
 COPY . .
 
 # Build the application
 RUN mvn clean package
 
 # ---- Runtime stage ----
-FROM eclipse-temurin:21-jre-alpine
+FROM 16-52-79-103.sslip.io/myapp-docker-group/eclipse-temurin:21-jre-alpine
+
 WORKDIR /app
 
 # Copy the built JAR from the build stage
