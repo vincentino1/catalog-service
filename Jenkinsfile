@@ -25,12 +25,13 @@ pipeline {
     environment {
         // Git
         GIT_CREDENTIALS_ID = 'Git_Credential'
+        NEXUS_CREDENTIALS_ID = 'Nexus_ID'
 
         // Nexus
         NEXUS_VERSION        = 'nexus3'
-        NEXUS_URL            = '10.0.10.25:8081'  
+        NEXUS_URL            = '10.0.10.209:8081'  
         NEXUS_REPO           = 'myapp-maven-releases'
-        NEXUS_CREDENTIALS_ID = 'Nexus_ID'
+
     }
 
     stages {
