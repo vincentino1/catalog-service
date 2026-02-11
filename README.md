@@ -1,4 +1,4 @@
-# Catalog Service
+# Catalog Service  
 
 Catalog Service for VogueThreads E-Commerce Platform - A Java/Spring Boot microservice for managing product catalog.
 
