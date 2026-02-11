@@ -28,11 +28,11 @@
     <distributionManagement>
     <repository>
       <id>nexus</id>  
-      <name>myapp-maven-releases</name>
+      <name>myapp-maven-hosted</name>
       <url>http://10.0.10.209:8081/repository/myapp-maven-hosted/</url>
     </repository>
      </distributionManagement>
-             
+          
     <dependencies>
         <!-- Spring Boot Web -->
         <dependency>
