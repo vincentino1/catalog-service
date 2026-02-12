@@ -24,20 +24,20 @@ pipeline {
 
     environment {
         // Git
-        GIT_CREDENTIALS_ID = 'Git_Credential'
+        GIT_CREDENTIALS_ID = 'github-creds'
         
 
         // Nexus
         NEXUS_VERSION        = 'nexus3'
         NEXUS_URL            = '10.0.10.209:8081'  
         NEXUS_REPO           = 'myapp-maven-hosted'
-        NEXUS_CREDENTIALS_ID = 'Nexus_ID'
+        NEXUS_CREDENTIALS_ID = 'nexus-creds'
 
         // Nexus Docker Registry ENV
         DOCKER_REPO            = 'myapp-docker-hosted'
         APP_NAME               = 'catalog-service'
         REGISTRY_HOSTNAME      = '16-52-79-103.sslip.io'
-        DOCKER_CREDENTIALS_ID  = 'Nexus_ID'
+        DOCKER_CREDENTIALS_ID  = 'docker-registry-creds'
         REVERSE_PROXY_BASE_URL = 'https://16-52-79-103.sslip.io'
         
 
@@ -135,16 +135,17 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            steps{
-                script{
-                    image = docker.build "${REGISTRY_HOSTNAME}/${DOCKER_REPO}/${APP_NAME}:${BUILD_NUMBER}"
+            steps {
+                script {
+                    docker.withRegistry("${REVERSE_PROXY_BASE_URL}", "${DOCKER_CREDENTIALS_ID}") {
+                        image = docker.build "${REGISTRY_HOSTNAME}/${DOCKER_REPO}/${APP_NAME}:${BUILD_NUMBER}"
+                    }                 
                 }
-
             }
            
         }
 
-        stage ('Deploy to Nexus Docker Registry') {
+        stage ('Deploy Image to Nexus Docker Registry') {
             steps {
                 script {
                     docker.withRegistry("${REVERSE_PROXY_BASE_URL}", "${DOCKER_CREDENTIALS_ID}") {
