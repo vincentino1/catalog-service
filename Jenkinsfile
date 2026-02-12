@@ -25,12 +25,22 @@ pipeline {
     environment {
         // Git
         GIT_CREDENTIALS_ID = 'Git_Credential'
-        NEXUS_CREDENTIALS_ID = 'Nexus_ID'
+        
 
         // Nexus
         NEXUS_VERSION        = 'nexus3'
         NEXUS_URL            = '10.0.10.209:8081'  
         NEXUS_REPO           = 'myapp-maven-hosted'
+        NEXUS_CREDENTIALS_ID = 'Nexus_ID'
+
+        // Nexus Docker Registry ENV
+        DOCKER_REPO            = 'myapp-docker-hosted'
+        APP_NAME               = 'catalog-service'
+        REGISTRY_HOSTNAME      = '16-52-79-103.sslip.io'
+        DOCKER_CREDENTIALS_ID  = 'Nexus_ID'
+        REVERSE_PROXY_BASE_URL = 'https://16-52-79-103.sslip.io'
+        
+
 
     }
 
@@ -96,13 +106,11 @@ pipeline {
                     def artifactPath = artifacts[0].path
                     echo "Publishing ${artifactPath}"
 
-                    // Debugging:
-                    echo "Nexus_version: ${env.NEXUS_VERSION}"
+                    // Debugging
                     echo "Nexus_url: ${env.NEXUS_URL}"
                     echo "groupid: ${pom.groupId}"
                     echo "version: ${version}"
                     echo "Nexus repo: ${env.NEXUS_REPO}"
-                    echo "Nexus user password: ${env.NEXUS_CREDENTIALS_ID}"
                     echo "Artifact: ${pom.artifactId}"
                     echo "Artifactpath: ${artifactPath}"
                     echo "Packinging: ${pom.packaging}"
@@ -126,25 +134,23 @@ pipeline {
             }
         }
 
-        stage('Docker Registry Login') {
+        stage('Build Docker Image') {
             steps{
-                withCredentials([usernamePassword(
-                    credentialsId: 'Nexus_ID', 
-                    usernameVariable : 'USR',
-                    passwordVariable : 'PWD' 
-                )]) {
-                    sh """ 
-                        echo "$PWD" | docker login 16-52-79-103.sslip.io \
-                        --username "$USR" --password-stdin 
-                    """
-                } 
+                script{
+                    image = docker.build "${REGISTRY_HOSTNAME}/${DOCKER_REPO}/${APP_NAME}:${env.BUILD_TAG}"
+                }
+
             }
            
         }
 
-        stage ('Docker Build') {
-            steps{
-                sh 'docker build -t nexus .'
+        stage ('Deploy to Nexus Docker Registry') {
+            steps {
+                script {
+                    docker.withRegistry("${REVERSE_PROXY_BASE_URL}", "${DOCKER_CREDENTIALS_ID}") {
+                        image.push()
+                    }
+                }
             }            
 
         }
