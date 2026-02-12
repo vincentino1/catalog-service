@@ -137,7 +137,7 @@ pipeline {
         stage('Build Docker Image') {
             steps{
                 script{
-                    image = docker.build "${REGISTRY_HOSTNAME}/${DOCKER_REPO}/${APP_NAME}:${env.BUILD_TAG}"
+                    image = docker.build "${REGISTRY_HOSTNAME}/${DOCKER_REPO}/${APP_NAME}:${BUILD_NUMBER}"
                 }
 
             }
