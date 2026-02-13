@@ -35,7 +35,6 @@ pipeline {
 
         // Nexus Docker Registry ENV
         DOCKER_REPO            = 'myapp-docker-hosted'
-        APP_NAME               = 'catalog-service'
         REGISTRY_HOSTNAME      = '16-52-79-103.sslip.io'
         DOCKER_CREDENTIALS_ID  = 'docker-registry-creds'
         REVERSE_PROXY_BASE_URL = 'https://16-52-79-103.sslip.io'
@@ -63,8 +62,16 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
+
+                    if (!env.ref) {
+                        error "Webhook did not send 'ref'. Cannot determine branch."
+                    }
+
                     env.branchName = env.ref.replace('refs/heads/', '')
                     echo "Checking out branch: ${env.branchName}"
+
+                    def pom = readMavenPom file: 'pom.xml'
+                    env.APP_NAME = pom.artifactId
                 }
 
                 git(
@@ -76,6 +83,7 @@ pipeline {
         }
 
         stage('Install & Build') {
+
             steps {
                 configFileProvider([
                     configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')
@@ -86,11 +94,14 @@ pipeline {
         }
 
         stage('Publish') {
+            when { 
+                
+                expression { return env.branchName == 'main'}
+            }
             steps {
                 script {
                     // Read POM
                     def pom = readMavenPom file: 'pom.xml'
-
                     def artifactId = pom.artifactId
                     def version    = pom.version
                     def packaging  = pom.packaging
@@ -105,16 +116,6 @@ pipeline {
 
                     def artifactPath = artifacts[0].path
                     echo "Publishing ${artifactPath}"
-
-                    // Debugging
-                    echo "Nexus_url: ${env.NEXUS_URL}"
-                    echo "groupid: ${pom.groupId}"
-                    echo "version: ${version}"
-                    echo "Nexus repo: ${env.NEXUS_REPO}"
-                    echo "Artifact: ${pom.artifactId}"
-                    echo "Artifactpath: ${artifactPath}"
-                    echo "Packinging: ${pom.packaging}"
-            
 
                     nexusArtifactUploader(
                         nexusVersion: env.NEXUS_VERSION,
@@ -135,20 +136,31 @@ pipeline {
         }
 
         stage('Build Docker Image') {
+
             steps {
                 script {
-                    docker.withRegistry("${REVERSE_PROXY_BASE_URL}", "${DOCKER_CREDENTIALS_ID}") {
-                        image = docker.build "${REGISTRY_HOSTNAME}/${DOCKER_REPO}/${APP_NAME}:${BUILD_NUMBER}"
-                    }                 
+
+                    env.IMAGE_NAME = "${REGISTRY_HOSTNAME}/${DOCKER_REPO}/${APP_NAME}:v${BUILD_NUMBER}"
+
+                    docker.withRegistry("${REVERSE_PROXY_BASE_URL}", "${DOCKER_CREDENTIALS_ID}") {                   
+                            docker.build(env.IMAGE_NAME, ".")
+                    }  
+
+                    echo "Docker image built: ${env.IMAGE_NAME}"             
                 }
             }
            
         }
 
         stage ('Deploy Image to Nexus Docker Registry') {
+            when { 
+
+                expression { return env.branchName == 'main'}
+            }
             steps {
                 script {
                     docker.withRegistry("${REVERSE_PROXY_BASE_URL}", "${DOCKER_CREDENTIALS_ID}") {
+                        def image = docker.image(env.IMAGE_NAME)
                         image.push()
                     }
                 }
