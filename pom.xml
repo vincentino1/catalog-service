@@ -27,9 +27,9 @@
 
     <distributionManagement>
     <repository>
-      <id>nexus</id>  
+      <id>myapp-maven-hosted</id>  
       <name>myapp-maven-hosted</name>
-      <url>http://10.0.10.91:8081/repository/myapp-maven-hosted/</url>
+      <url>http://3-98-125-121.sslip.io/repository/myapp-maven-hosted/</url> 
     </repository>
      </distributionManagement>
           
