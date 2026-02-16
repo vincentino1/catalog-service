@@ -1,5 +1,5 @@
 # Private Nexus Docker registry 
-ARG DOCKER_PRIVATE_REPO=16-52-79-103.sslip.io/myapp-docker-group
+ARG DOCKER_PRIVATE_REPO=3-98-125-121.sslip.io/myapp-docker-group
 
 # ---- Build stage ----
 FROM ${DOCKER_PRIVATE_REPO}/maven:3.9.6-eclipse-temurin-21 AS build
