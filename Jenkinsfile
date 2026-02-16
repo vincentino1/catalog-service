@@ -29,15 +29,15 @@ pipeline {
 
         // Nexus
         NEXUS_VERSION        = 'nexus3'
-        NEXUS_URL            = '10.0.10.209:8081'  
+        NEXUS_URL            = '10.0.10.91:8081'  
         NEXUS_REPO           = 'myapp-maven-hosted'
         NEXUS_CREDENTIALS_ID = 'nexus-creds'
 
         // Nexus Docker Registry ENV
         DOCKER_REPO            = 'myapp-docker-hosted'
-        REGISTRY_HOSTNAME      = '16-52-79-103.sslip.io'
+        REGISTRY_HOSTNAME      = '3-98-125-121.sslip.io'
         DOCKER_CREDENTIALS_ID  = 'docker-registry-creds'
-        REVERSE_PROXY_BASE_URL = 'https://16-52-79-103.sslip.io'
+        REVERSE_PROXY_BASE_URL = 'https://3-98-125-121.sslip.io'
         
 
 
