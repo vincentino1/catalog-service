@@ -61,6 +61,13 @@ pipeline {
 
         stage('Checkout') {
             steps {
+
+                git(
+                    branch: env.branchName,
+                    credentialsId: env.GIT_CREDENTIALS_ID,
+                    url: 'https://github.com/vincentino1/catalog-service.git'
+                )
+
                 script {
 
                     if (!env.ref) {
@@ -69,16 +76,12 @@ pipeline {
 
                     env.branchName = env.ref.replace('refs/heads/', '')
                     echo "Checking out branch: ${env.branchName}"
-
+                    
+                    // Read Maven POM AFTER checkout
                     def pom = readMavenPom file: 'pom.xml'
                     env.APP_NAME = pom.artifactId
                 }
-
-                git(
-                    branch: env.branchName,
-                    credentialsId: env.GIT_CREDENTIALS_ID,
-                    url: 'https://github.com/vincentino1/catalog-service.git'
-                )
+                
             }
         }
 
