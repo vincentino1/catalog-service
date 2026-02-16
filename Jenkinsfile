@@ -2,7 +2,7 @@ properties([
     pipelineTriggers([ 
         [
             $class: 'GenericTrigger',
-            token: 'MY_SPRING_TOKEN',
+            token: 'MY_SPRING_TOKEN',  
             printContributedVariables: true,
             genericVariables: [
                 [key: 'ref',       value: '$.ref'],
