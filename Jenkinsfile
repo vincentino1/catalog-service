@@ -25,7 +25,6 @@ pipeline {
     environment {
         // Git
         GIT_CREDENTIALS_ID = 'github-creds'
-        
 
         // Nexus
         NEXUS_VERSION        = 'nexus3'
@@ -34,13 +33,10 @@ pipeline {
         NEXUS_CREDENTIALS_ID = 'nexus-creds'
 
         // Nexus Docker Registry ENV
-        DOCKER_REPO            = 'myapp-docker-hosted'
-        REGISTRY_HOSTNAME      = '3-98-125-121.sslip.io'
-        DOCKER_CREDENTIALS_ID  = 'docker-registry-creds'
+        DOCKER_REPO           = 'myapp-docker-hosted'
+        REGISTRY_HOSTNAME     = '3-98-125-121.sslip.io'
+        DOCKER_CREDENTIALS_ID = 'docker-registry-creds'
         REVERSE_PROXY_BASE_URL = 'https://3-98-125-121.sslip.io'
-        
-
-
     }
 
     stages {
@@ -61,6 +57,13 @@ pipeline {
 
         stage('Checkout') {
             steps {
+                script {
+                    if (!env.ref) {
+                        error "Webhook did not send 'ref'. Cannot determine branch."
+                    }
+                    env.branchName = env.ref.replace('refs/heads/', '')
+                    echo "Checking out branch: ${env.branchName}"
+                }
 
                 git(
                     branch: env.branchName,
@@ -69,24 +72,14 @@ pipeline {
                 )
 
                 script {
-
-                    if (!env.ref) {
-                        error "Webhook did not send 'ref'. Cannot determine branch."
-                    }
-
-                    env.branchName = env.ref.replace('refs/heads/', '')
-                    echo "Checking out branch: ${env.branchName}"
-                    
                     // Read Maven POM AFTER checkout
                     def pom = readMavenPom file: 'pom.xml'
                     env.APP_NAME = pom.artifactId
                 }
-                
             }
         }
 
         stage('Install & Build') {
-
             steps {
                 configFileProvider([
                     configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')
@@ -98,8 +91,7 @@ pipeline {
 
         stage('Publish') {
             when { 
-                
-                expression { return env.branchName == 'main'}
+                expression { env.branchName == 'main' }
             }
             steps {
                 script {
@@ -139,26 +131,22 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-
             steps {
                 script {
-
                     env.IMAGE_NAME = "${REGISTRY_HOSTNAME}/${DOCKER_REPO}/${APP_NAME}:v${BUILD_NUMBER}"
 
                     docker.withRegistry("${REVERSE_PROXY_BASE_URL}", "${DOCKER_CREDENTIALS_ID}") {                   
-                            docker.build(env.IMAGE_NAME, ".")
+                        docker.build(env.IMAGE_NAME, ".")
                     }  
 
                     echo "Docker image built: ${env.IMAGE_NAME}"             
                 }
             }
-           
         }
 
-        stage ('Deploy Image to Nexus Docker Registry') {
+        stage('Deploy Image to Nexus Docker Registry') {
             when { 
-
-                expression { return env.branchName == 'main'}
+                expression { env.branchName == 'main' }
             }
             steps {
                 script {
@@ -168,9 +156,7 @@ pipeline {
                     }
                 }
             }            
-
         }
-
     }
 
     post {
