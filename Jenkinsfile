@@ -117,8 +117,8 @@ pipeline {
 
                     nexusArtifactUploader(
                         nexusVersion: env.NEXUS_VERSION,
-                        protocol: 'http',
-                        nexusUrl: "${env.NEXUS_URL}:8081",
+                        protocol: 'https',
+                        nexusUrl: env.NEXUS_URL,
                         groupId: pom.groupId,
                         version: version,
                         repository: env.NEXUS_REPO,
