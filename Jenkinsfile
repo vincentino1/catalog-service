@@ -31,6 +31,7 @@ pipeline {
         NEXUS_VERSION        = 'nexus3'
         NEXUS_CREDENTIALS_ID = 'nexus-creds'
         NEXUS_URL=    'repo.vinny-dev.com'
+        NEXUS_REPO    = 'myapp-maven-hosted'
 
 
         // Nexus Docker Registry ENV
