@@ -29,7 +29,7 @@
     <repository>
       <id>myapp-maven-hosted</id>  
       <name>myapp-maven-hosted</name>
-      <url>http://3-98-125-121.sslip.io/repository/myapp-maven-hosted/</url> 
+      <url>http://repo.vinny-dev.com/repository/myapp-maven-hosted/</url> 
     </repository>
      </distributionManagement>
           
