@@ -30,7 +30,7 @@ pipeline {
         // Nexus
         NEXUS_VERSION        = 'nexus3'
         NEXUS_CREDENTIALS_ID = 'nexus-creds'
-        NEXUS_URL=repo.vinny-dev.com
+        NEXUS_URL=    'repo.vinny-dev.com'
 
 
         // Nexus Docker Registry ENV
