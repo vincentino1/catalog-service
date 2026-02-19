@@ -30,13 +30,13 @@ pipeline {
         // Nexus
         NEXUS_VERSION        = 'nexus3'
         NEXUS_CREDENTIALS_ID = 'nexus-creds'
+        NEXUS_URL=repo.vinny-dev.com
+
 
         // Nexus Docker Registry ENV
         DOCKER_REPO_PUSH           = 'myapp-docker-hosted'
         DOCKER_REPO_PULL          = 'myapp-docker-group'
         DOCKER_CREDENTIALS_ID = 'docker-registry-creds'
-
-        // NEXUS_URL is set as Jenkins environment variable
 
 
     }
