@@ -25,18 +25,20 @@ pipeline {
     environment {
         // Git
         GIT_CREDENTIALS_ID = 'github-creds'
+        GIT_BRANCH_URL = 'https://github.com/vincentino1/catalog-service.git'
 
         // Nexus
         NEXUS_VERSION        = 'nexus3'
-        NEXUS_URL            = '10.0.10.91:8081'  
-        NEXUS_REPO           = 'myapp-maven-hosted'
         NEXUS_CREDENTIALS_ID = 'nexus-creds'
 
         // Nexus Docker Registry ENV
-        DOCKER_REPO           = 'myapp-docker-hosted'
-        REGISTRY_HOSTNAME     = '3-98-125-121.sslip.io'
+        DOCKER_REPO_PUSH           = 'myapp-docker-hosted'
+        DOCKER_REPO_PULL          = 'myapp-docker-group'
         DOCKER_CREDENTIALS_ID = 'docker-registry-creds'
-        REVERSE_PROXY_BASE_URL = 'https://3-98-125-121.sslip.io'
+
+        // NEXUS_URL & DOCKER_REGISTRY_URL are set as Jenkins environment variables
+
+
     }
 
     stages {
@@ -68,7 +70,7 @@ pipeline {
                 git(
                     branch: env.branchName,
                     credentialsId: env.GIT_CREDENTIALS_ID,
-                    url: 'https://github.com/vincentino1/catalog-service.git'
+                    url: env.GIT_BRANCH_URL
                 )
 
                 script {
@@ -115,7 +117,7 @@ pipeline {
                     nexusArtifactUploader(
                         nexusVersion: env.NEXUS_VERSION,
                         protocol: 'http',
-                        nexusUrl: env.NEXUS_URL,
+                        nexusUrl: "${env.NEXUS_URL}:8081",
                         groupId: pom.groupId,
                         version: version,
                         repository: env.NEXUS_REPO,
@@ -133,10 +135,10 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    env.IMAGE_NAME = "${REGISTRY_HOSTNAME}/${DOCKER_REPO}/${APP_NAME}:v${BUILD_NUMBER}"
+                    env.IMAGE_NAME = "${env.DOCKER_REGISTRY_URL}/${env.DOCKER_REPO_PUSH}/${env.APP_NAME}:v${env.BUILD_NUMBER}"
 
-                    docker.withRegistry("${REVERSE_PROXY_BASE_URL}", "${DOCKER_CREDENTIALS_ID}") {                   
-                        docker.build(env.IMAGE_NAME, ".")
+                    docker.withRegistry("https://${env.DOCKER_REGISTRY_URL}", "${env.DOCKER_CREDENTIALS_ID}") {                   
+                        docker.build(env.IMAGE_NAME, "--build-arg DOCKER_PRIVATE_REPO=${env.NEXUS_URL}/${env.DOCKER_REPO_PULL} .")
                     }  
 
                     echo "Docker image built: ${env.IMAGE_NAME}"             
@@ -150,7 +152,7 @@ pipeline {
             }
             steps {
                 script {
-                    docker.withRegistry("${REVERSE_PROXY_BASE_URL}", "${DOCKER_CREDENTIALS_ID}") {
+                    docker.withRegistry("https://${env.DOCKER_REGISTRY_URL}", "${env.DOCKER_CREDENTIALS_ID}") {
                         def image = docker.image(env.IMAGE_NAME)
                         image.push()
                     }
@@ -160,6 +162,13 @@ pipeline {
     }
 
     post {
+        always {
+            script {
+                if (env.IMAGE_NAME) {
+                    sh "docker rmi ${env.IMAGE_NAME} || true"
+                }
+            }
+        }
         success {
             echo 'Pipeline completed successfully.'
         }
